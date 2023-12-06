@@ -2,7 +2,6 @@ package com.mygdx.game.entities.player;
 
 import com.mygdx.game.components.PhysicsComponent;
 import com.mygdx.game.entities.Entity;
-import com.mygdx.game.map.MapManager;
 
 public class PlayerPhysicsComponent extends PhysicsComponent {
     @Override
@@ -19,7 +18,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
     }
 
     @Override
-    public void update(Entity entity, MapManager mapManager, float delta) {
+    public void update(Entity entity, float delta) {
 
     }
 }

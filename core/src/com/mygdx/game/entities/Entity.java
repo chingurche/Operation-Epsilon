@@ -7,7 +7,6 @@ import com.mygdx.game.components.Component;
 import com.mygdx.game.components.GraphicsComponent;
 import com.mygdx.game.components.InputComponent;
 import com.mygdx.game.components.PhysicsComponent;
-import com.mygdx.game.map.MapManager;
 
 public class Entity {
     private Json json;
@@ -33,9 +32,9 @@ public class Entity {
     }
 
 
-    public void update(MapManager mapManager, Batch batch, float delta) {
+    public void update(Batch batch, float delta) {
         inputComponent.update(this, delta);
-        graphicsComponent.update(this, mapManager, batch, delta);
-        physicsComponent.update(this, mapManager, delta);
+        graphicsComponent.update(this, batch, delta);
+        physicsComponent.update(this, delta);
     }
 }

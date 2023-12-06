@@ -1,44 +1,53 @@
 package com.mygdx.game.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.audio.AudioManager;
 import com.mygdx.game.components.ComponentObserver;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.EntityFactory;
 import com.mygdx.game.manager.ResourceManager;
-import com.mygdx.game.map.Map;
-import com.mygdx.game.map.MapManager;
 
 public class GameScreen extends BaseScreen implements ComponentObserver {
     protected OrthogonalTiledMapRenderer mapRenderer = null;
-    protected MapManager mapManager;
     private MyGdxGame game;
     private Entity player;
 
     public GameScreen(MyGdxGame gdxGame, ResourceManager resourceManager) {
         super(gdxGame, resourceManager);
         game = gdxGame;
-        mapManager = new MapManager();
+
+
 
         player = EntityFactory.getInstance().getEntity(EntityFactory.EntityType.PLAYER);
     }
 
     @Override
+    public void onNotify(String value, ComponentEvent event) {
+
+    }
+
+    @Override
     public void show() {
-        if (mapRenderer == null) {
-            mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentTiledMap(), Map.UNIT_SCALE);
-        }
+
     }
 
     @Override
     public void render(float delta) {
-        player.update(mapManager, mapRenderer.getBatch(), delta);
-    }
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    @Override
-    public void onNotify(String value, ComponentEvent event) {
-
+        //mapRenderer.setView(camera);
+        /*ScreenUtils.clear(1, 0, 0, 1);
+        game.getBatch().begin();
+        game.getBatch().draw(img, 100, 100);
+        game.getBatch().end();*/
+        //player.update(mapManager, mapRenderer.getBatch(), delta);
     }
 }

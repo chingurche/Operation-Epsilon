@@ -13,11 +13,15 @@ public class ComponentSubject {
         observers.removeValue(observer, true);
     }
 
-    public void removeAllObserver() {
-        for(ComponentObserver observer: observers) {
+    public void removeAllObservers() {
+        for (ComponentObserver observer : observers) {
             observers.removeValue(observer, true);
         }
     }
 
-    protected void notify()
+    protected void notify(String value, ComponentObserver.ComponentEvent event) {
+        for(ComponentObserver observer:observers) {
+            observer.onNotify(value, event);
+        }
+    }
 }

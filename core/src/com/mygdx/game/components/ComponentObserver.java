@@ -7,5 +7,5 @@ public interface ComponentObserver {
 
     }
 
-    void onNotify(Entity entity, ComponentEvent event);
+    void onNotify(String value, ComponentEvent event);
 }

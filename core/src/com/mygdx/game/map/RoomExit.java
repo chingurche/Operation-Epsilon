@@ -8,7 +8,19 @@ public class RoomExit {
         UP_LEFT,
         UP_RIGHT,
         DOWN_LEFT,
-        DOWN_RIGHT
+        DOWN_RIGHT;
+
+        public Direction getOpposite() {
+            if (this == UP_LEFT) {
+                return DOWN_RIGHT;
+            } else if (this == UP_RIGHT) {
+                return DOWN_LEFT;
+            } else if (this == DOWN_LEFT) {
+                return UP_RIGHT;
+            } else {
+                return UP_LEFT;
+            }
+        }
     }
 
     private final Direction direction;

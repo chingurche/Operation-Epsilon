@@ -1,5 +1,6 @@
 package com.mygdx.game.entities.player;
 
+import com.mygdx.game.components.Component;
 import com.mygdx.game.components.PhysicsComponent;
 import com.mygdx.game.entities.Entity;
 
@@ -13,7 +14,9 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         }
 
         if (string.length == 2) {
+            if (string[0].equalsIgnoreCase(MESSAGE.CURRENT_POSITION.toString())) {
 
+            }
         }
     }
 

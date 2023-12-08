@@ -8,9 +8,16 @@ import java.util.List;
 
 public class GameStage {
     private Array<Room> rooms;
+    private Room currentRoom;
 
     public GameStage() {
+        Room room = new Room(new Vector2(0, 0));
+        //rooms.add(room);
+        //createRooms(5);
+    }
 
+    public Room getCurrentRoom() {
+        return currentRoom;
     }
 
     private void createRooms(int roomsNumber) {
@@ -39,7 +46,7 @@ public class GameStage {
         return null;
     }
 
-    private Array<Room> getRoundedRooms(Room room) {
+    private Array<Room> setRoundedRooms(Room room) {
         Array<Room> roundedRooms = new Array<>();
 
         Room room1 = getRoomByPosition(room.getPosition().add(new Vector2(1, 0)));

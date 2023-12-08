@@ -8,6 +8,8 @@ import com.mygdx.game.components.GraphicsComponent;
 import com.mygdx.game.components.InputComponent;
 import com.mygdx.game.components.PhysicsComponent;
 
+import java.lang.ref.SoftReference;
+
 public class Entity {
     private Json json;
     private EntityConfig entityConfig;
@@ -36,5 +38,17 @@ public class Entity {
         inputComponent.update(this, delta);
         graphicsComponent.update(this, batch, delta);
         physicsComponent.update(this, delta);
+    }
+
+    public void sendMessage(Component.MESSAGE type, String ... args) {
+        String message = type.toString();
+
+        for (String string : args) {
+            message += Component.MESSAGE_TOKEN + string;
+        }
+
+        for (Component component : components) {
+            component.receiveMessage(message);
+        }
     }
 }

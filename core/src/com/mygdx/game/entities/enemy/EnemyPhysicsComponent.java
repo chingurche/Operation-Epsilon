@@ -1,9 +1,11 @@
-package com.mygdx.game.entities.player;
+package com.mygdx.game.entities.enemy;
 
-import com.mygdx.game.components.InputComponent;
+import com.mygdx.game.components.PhysicsComponent;
 import com.mygdx.game.entities.Entity;
 
-public class PlayerInputComponent extends InputComponent {
+public class EnemyPhysicsComponent extends PhysicsComponent {
+
+
     @Override
     public void receiveMessage(String message) {
         String[] string = message.split(MESSAGE_TOKEN);
@@ -13,7 +15,9 @@ public class PlayerInputComponent extends InputComponent {
         }
 
         if (string.length == 2) {
+            if (string[0].equalsIgnoreCase(MESSAGE.CURRENT_POSITION.toString())) {
 
+            }
         }
     }
 

@@ -16,9 +16,14 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.entities.Entity;
+import com.mygdx.game.entities.EntityFactory;
+
 
 public class ResourceManager {
     private static InternalFileHandleResolver filePathResolver =  new InternalFileHandleResolver();
@@ -43,29 +48,67 @@ public class ResourceManager {
         return map;
     }
 
-    public static void parseMapObjects(TiledMap tiledMap, World world) {
+    public static Array<Body> parseStaticObjects(TiledMap tiledMap, World world) {
         MapObjects mapObjects = tiledMap.getLayers().get("objects").getObjects();
+        Array<Body> worldBodies = new Array<>();
 
         for (MapObject mapObject : mapObjects) {
-            try {
-                createBody((PolygonMapObject) mapObject, world);
-            }
-            catch (ClassCastException e) {
-                continue;
+            if (mapObject instanceof PolygonMapObject && mapObject.getName() == null) {
+                Body worldBody = createStaticBody((PolygonMapObject) mapObject, world);
+                worldBodies.add(worldBody);
             }
         }
+
+        return worldBodies;
     }
 
-    private static void createBody(PolygonMapObject polygonMapObject, World world) {
+    public static Array<Entity> parseEntities(TiledMap tiledMap, World world) {
+        MapObjects mapObjects = tiledMap.getLayers().get("objects").getObjects();
+        Array<Entity> entities = new Array<>();
+
+        for (MapObject mapObject : mapObjects) {
+            String mapObjectName = mapObject.getName();
+
+            switch (mapObjectName) {
+                case "baseenemy":
+                    Entity entity = EntityFactory.getInstance().getEntity(EntityFactory.EntityType.BASE_ENEMY, world);
+                    entities.add(entity);
+                    break;
+                case "slowenemy":
+                    break;
+            }
+        }
+
+        return entities;
+    }
+
+    public static Body createBody(World world) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.fixedRotation = true;
+        Body body = world.createBody(bodyDef);
+
+        CircleShape shape = new CircleShape();
+        shape.setPosition(new Vector2(7, 9));
+        shape.setRadius(1);
+        body.createFixture(shape, 1000);
+
+        return body;
+    }
+
+    private static Body createStaticBody(PolygonMapObject polygonMapObject, World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         Body body = world.createBody(bodyDef);
-        Shape shape = createShape(polygonMapObject);
+
+        Shape shape = createPolygonShape(polygonMapObject);
         body.createFixture(shape, 1000);
         shape.dispose();
+
+        return body;
     }
 
-    private static Shape createShape(PolygonMapObject polygonMapObject) {
+    private static Shape createPolygonShape(PolygonMapObject polygonMapObject) {
         float[] vertices = polygonMapObject.getPolygon().getTransformedVertices();
         Vector2[] worldVertices = new Vector2[vertices.length / 2];
 

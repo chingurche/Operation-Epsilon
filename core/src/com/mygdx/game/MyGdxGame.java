@@ -22,7 +22,7 @@ public class MyGdxGame extends Game {
 		resourceManager = new ResourceManager();
 
 		//menuScreen = new MenuScreen(this, resourceManager);
-		gameScreen = new GameScreen(this, resourceManager);
+		gameScreen = new GameScreen(this, batch);
 
 		this.setScreen(gameScreen);
 	}

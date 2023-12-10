@@ -1,0 +1,20 @@
+{
+  "animationConfigs":[
+    {
+      "animationType": "WALKING_FORWARD",
+      "stateTime":0.1,
+      "texturePaths": [
+        "textures/player/walking_forward1.png",
+        "textures/player/walking_forward2.png"
+      ]
+    },
+    {
+      "animationType": "WALKING_BACK",
+      "stateTime":0.1,
+      "texturePaths": [
+        "textures/player/walking_back1.png",
+        "textures/player/walking_back2.png"
+      ]
+    }
+  ]
+}

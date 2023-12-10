@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Json;
+import com.mygdx.game.components.Component;
 import com.mygdx.game.entities.enemy.EnemyGraphicsComponent;
 import com.mygdx.game.entities.enemy.EnemyPhysicsComponent;
 import com.mygdx.game.entities.player.PlayerGraphicsComponent;
@@ -13,6 +15,7 @@ import com.mygdx.game.manager.ResourceManager;
 import java.util.Hashtable;
 
 public class EntityFactory {
+    private Json json;
     private static EntityFactory instance = null;
     private Hashtable<String, EntityConfig> entities;
 
@@ -25,6 +28,7 @@ public class EntityFactory {
     }
 
     private EntityFactory() {
+        json = new Json();
         entities = new Hashtable<>();
     }
 
@@ -41,12 +45,13 @@ public class EntityFactory {
         switch (entityType) {
             case PLAYER:
                 entity = new Entity(new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
+
                 Body body = ResourceManager.createBody(world);
                 entity.setBody(body);
 
-                ResourceManager.loadTextureAsset("textures/player/player1_fd.png");
-                Texture texture = ResourceManager.getTextureAsset("textures/player/player1_fd.png");
-                entity.setTexture(texture);
+                entity.setEntityConfig(Entity.getEntityConfig("scripts/player.json"));
+                entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
+
                 return entity;
             case BASE_ENEMY:
                 entity = new Entity(new EnemyPhysicsComponent(), new EnemyGraphicsComponent());

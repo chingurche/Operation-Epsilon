@@ -5,7 +5,8 @@ public interface Component {
 
     enum MESSAGE {
         CURRENT_POSITION,
-        ENTITY_DIRECTION
+        ENTITY_DIRECTION,
+        LOAD_ANIMATIONS
     }
 
     void receiveMessage(String message);

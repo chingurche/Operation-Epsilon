@@ -1,6 +1,6 @@
 package com.mygdx.game.manager;
 
-import static com.mygdx.game.utils.Constants.PPM;
+import static com.mygdx.game.utils.StaticValues.PPM;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.MusicLoader;

@@ -5,7 +5,6 @@ import com.mygdx.game.components.GraphicsComponent;
 import com.mygdx.game.entities.Entity;
 
 public class EnemyGraphicsComponent extends GraphicsComponent {
-
     @Override
     public void receiveMessage(String message) {
         String[] string = message.split(MESSAGE_TOKEN);

@@ -1,34 +1,25 @@
 package com.mygdx.game.screen;
 
-import static com.mygdx.game.utils.Constants.PPM;
+import static com.mygdx.game.utils.StaticValues.PPM;
+import static com.mygdx.game.utils.StaticValues.gameTime;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Vector4;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.audio.AudioManager;
-import com.mygdx.game.audio.AudioObserver;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.ComponentObserver;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.EntityFactory;
-import com.mygdx.game.manager.ResourceManager;
 import com.mygdx.game.map.GameStage;
 import com.mygdx.game.utils.Joystick;
 
@@ -90,7 +81,7 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         //notify(AudioObserver.AudioCommand.MUSIC_PLAY_LOOP, AudioObserver.AudioTypeEvent.MENU_THEME);
     }
 
-    private void update() {
+    private void update(float delta) {
         world.step(1 / 60f, 6, 2);
         camera.position.set(new Vector3(128, 64, 0));
         camera.update();
@@ -98,11 +89,12 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         batch.setProjectionMatrix(camera.combined);
         hudBatch.setProjectionMatrix(hudCamera.combined);
         mapRenderer.setView(camera);
+        gameTime += delta;
     }
 
     @Override
     public void render(float delta) {
-        this.update();
+        this.update(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

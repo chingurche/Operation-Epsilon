@@ -9,13 +9,14 @@ import com.mygdx.game.manager.ResourceManager;
 public class Joystick {
     private boolean active = false;
     private Circle circle;
+    private Vector2 handleStartPosition;
     private Vector2 handlePosition;
-    private Vector2 direction;
     private Texture joystickTexture, handleTexture;
 
     public Joystick(float x, float y, float radius) {
         circle = new Circle(x, y, radius);
-        handlePosition = new Vector2(x, y);
+        handleStartPosition = new Vector2(x, y);
+        handlePosition = handleStartPosition;
 
         ResourceManager.loadTextureAsset("joystick/JoystickSplitted.png");
         joystickTexture = ResourceManager.getTextureAsset("joystick/JoystickSplitted.png");
@@ -24,7 +25,8 @@ public class Joystick {
     }
 
     public Vector2 getDirection() {
-        direction = handlePosition.sub(new Vector2(circle.x, circle.y)).nor();
+        Vector2 handleNewPosition = new Vector2(handlePosition);
+        Vector2 direction = handleNewPosition.sub(new Vector2(circle.x, circle.y)).nor().scl(1, -1);
         return direction;
     }
 
@@ -32,6 +34,7 @@ public class Joystick {
         if (circle.contains(x, y)) {
             active = true;
             handlePosition.set(x, y);
+            return;
         }
         active = false;
     }
@@ -43,13 +46,13 @@ public class Joystick {
     }
 
     public void end() {
-        handlePosition.set(0, 0);
+        handlePosition.set(circle.x, circle.y);
     }
 
     public void render(Batch batch) {
         batch.begin();
-        batch.draw(joystickTexture, circle.x - circle.radius * 2, circle.y - circle.radius * 2);
-        batch.draw(handleTexture, handlePosition.x + 25, handlePosition.y + 25, 100, 100);
+        batch.draw(joystickTexture, circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
+        batch.draw(handleTexture, handlePosition.x - 50, handlePosition.y - 50, 100, 100);
         batch.end();
     }
 }

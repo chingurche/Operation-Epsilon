@@ -8,6 +8,7 @@ import com.mygdx.game.screen.MenuScreen;
 
 public class MyGdxGame extends Game {
 	private SpriteBatch batch;
+	private SpriteBatch hudBatch;
 	private ResourceManager resourceManager;
 	public MenuScreen menuScreen;
 	public GameScreen gameScreen;
@@ -19,10 +20,11 @@ public class MyGdxGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		hudBatch = new SpriteBatch();
 		resourceManager = new ResourceManager();
 
 		//menuScreen = new MenuScreen(this, resourceManager);
-		gameScreen = new GameScreen(this, batch);
+		gameScreen = new GameScreen(this, batch, hudBatch);
 
 		this.setScreen(gameScreen);
 	}

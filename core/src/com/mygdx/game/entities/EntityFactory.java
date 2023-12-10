@@ -44,8 +44,8 @@ public class EntityFactory {
                 Body body = ResourceManager.createBody(world);
                 entity.setBody(body);
 
-                ResourceManager.loadTextureAsset("textures/player/idle1.png");
-                Texture texture = ResourceManager.getTextureAsset("textures/player/idle1.png");
+                ResourceManager.loadTextureAsset("textures/player/player1_fd.png");
+                Texture texture = ResourceManager.getTextureAsset("textures/player/player1_fd.png");
                 entity.setTexture(texture);
                 return entity;
             case BASE_ENEMY:

@@ -2,7 +2,7 @@ package com.mygdx.game.audio;
 
 public interface AudioObserver {
     enum AudioTypeEvent {
-        MENU_THEME("music/lol.mp3"),
+        MENU_THEME("audio/samurairocket.mp3"),
         NONE("");
 
         private String audioFullFilePath;

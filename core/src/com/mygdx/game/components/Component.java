@@ -4,7 +4,8 @@ public interface Component {
     String MESSAGE_TOKEN = ":::::";
 
     enum MESSAGE {
-        CURRENT_POSITION
+        CURRENT_POSITION,
+        ENTITY_DIRECTION
     }
 
     void receiveMessage(String message);

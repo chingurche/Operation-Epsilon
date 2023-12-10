@@ -3,6 +3,7 @@ package com.mygdx.game.screen;
 import static com.mygdx.game.utils.Constants.PPM;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,9 +19,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.audio.AudioManager;
+import com.mygdx.game.audio.AudioObserver;
+import com.mygdx.game.components.Component;
 import com.mygdx.game.components.ComponentObserver;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.EntityFactory;
@@ -34,9 +38,11 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
     private final float cameraViewport = 6;
     private final Vector2 screenSize;
     private OrthographicCamera camera;
+    private OrthographicCamera hudCamera;
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
     protected OrthogonalTiledMapRenderer mapRenderer;
+    private Json json;
 
     private ArrayList<GameStage> gameStages = new ArrayList<>();
     private Joystick joystick;
@@ -46,8 +52,10 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
     private Texture floor;
     private Texture walls;
 
-    public GameScreen(MyGdxGame gdxGame, Batch batch) {
-        super(gdxGame, batch);
+    public GameScreen(MyGdxGame gdxGame, Batch batch, Batch hudBatch) {
+        super(gdxGame, batch, hudBatch);
+
+        json = new Json();
 
         createWorld();
         box2DDebugRenderer.SHAPE_STATIC.set(0, 0, 255, 255);
@@ -57,14 +65,18 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         screenSize = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, screenSize.x / cameraViewport, screenSize.y / cameraViewport);
 
+        hudCamera = new OrthographicCamera();
+        hudCamera.setToOrtho(true, screenSize.x, screenSize.y);
 
         GameStage stage = new GameStage(world);
         gameStages.add(stage);
         mapRenderer = new OrthogonalTiledMapRenderer(stage.getCurrentRoom().getMap());
 
-        joystick = new Joystick(200, 200, 50);
+        joystick = new Joystick(300, screenSize.y - 300, 200);
         player = EntityFactory.getInstance().getEntity(EntityFactory.EntityType.PLAYER, world);
         onRoomChanged();
+
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -74,7 +86,8 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
 
     @Override
     public void show() {
-
+        //notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.MENU_THEME);
+        //notify(AudioObserver.AudioCommand.MUSIC_PLAY_LOOP, AudioObserver.AudioTypeEvent.MENU_THEME);
     }
 
     private void update() {
@@ -83,6 +96,7 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
+        hudBatch.setProjectionMatrix(hudCamera.combined);
         mapRenderer.setView(camera);
     }
 
@@ -102,33 +116,30 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         batch.end();
 
         player.update(batch, delta);
-
         mapRenderer.render();
-
-        joystick.render(game.getBatch());
-
-
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+
+        joystick.render(hudBatch);
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         joystick.start(screenX, screenY);
-
+        player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(joystick.getDirection()));
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         joystick.dragged(screenX, screenY);
-
+        player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(joystick.getDirection()));
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         joystick.end();
-
+        player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(Vector2.Zero));
         return true;
     }
 

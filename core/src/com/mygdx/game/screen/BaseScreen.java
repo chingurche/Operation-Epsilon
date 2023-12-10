@@ -17,6 +17,7 @@ import com.mygdx.game.manager.ResourceManager;
 public class BaseScreen implements Screen, AudioSubject, InputProcessor {
     protected final MyGdxGame game;
     protected Batch batch;
+    protected Batch hudBatch;
 
     protected OrthographicCamera camera;
     protected Viewport viewport;
@@ -24,9 +25,10 @@ public class BaseScreen implements Screen, AudioSubject, InputProcessor {
 
     private Array<AudioObserver> observers;
 
-    public BaseScreen(MyGdxGame game, Batch batch) {
+    public BaseScreen(MyGdxGame game, Batch batch, Batch hudBatch) {
         this.game = game;
         this.batch = batch;
+        this.hudBatch = hudBatch;
 
         observers = new Array<>();
         this.addObserver(AudioManager.getInstance());

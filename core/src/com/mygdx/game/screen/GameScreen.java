@@ -7,11 +7,10 @@ import static com.mygdx.game.utils.StaticValues.screenSize;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -22,17 +21,17 @@ import com.mygdx.game.components.Component;
 import com.mygdx.game.components.ComponentObserver;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.EntityFactory;
+import com.mygdx.game.physics.PhysicsContactListener;
+import com.mygdx.game.physics.PhysicsManager;
 import com.mygdx.game.map.GameStage;
-import com.mygdx.game.map.RoomExit;
 import com.mygdx.game.utils.Joystick;
-
-import java.util.ArrayList;
 
 public class GameScreen extends BaseScreen implements ComponentObserver {
     private final float cameraViewport = 6;
     private OrthographicCamera camera;
     private OrthographicCamera hudCamera;
     private World world;
+    private PhysicsContactListener physicsContactListener;
     private Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
     private Json json;
 
@@ -95,9 +94,11 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         gameStage.render(batch, delta);
 
         player.update(batch, delta);
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
 
         gameStage.renderEffects(hudBatch, delta);
+
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+
         joystick.render(hudBatch);
     }
 
@@ -124,8 +125,26 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
 
     private void createWorld() {
         world = new World(new Vector2(0, 0), false);
+        physicsContactListener = new PhysicsContactListener();
+        world.setContactListener(physicsContactListener);
 
+        //стены
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
+        Body body1 = world.createBody(bodyDef);
+        Body body2 = world.createBody(bodyDef);
+        Body body3 = world.createBody(bodyDef);
+        Body body4 = world.createBody(bodyDef);
+
+        body1.createFixture(PhysicsManager.createRectangleShape(100, 1), 1000);
+        body1.setTransform(0, -0.5f, 0);
+        body2.createFixture(PhysicsManager.createRectangleShape(100, 1), 1000);
+        body2.setTransform(0, 16.5f, 0);
+        body3.createFixture(PhysicsManager.createRectangleShape(1, 100), 1000);
+        body3.setTransform(-0.5f, 0, 0);
+        body4.createFixture(PhysicsManager.createRectangleShape(1, 100), 1000);
+        body4.setTransform(32.5f, 0, 0);
+
+        //выходы
     }
 }

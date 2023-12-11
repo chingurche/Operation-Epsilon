@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.manager.ResourceManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,9 +43,13 @@ public class Room {
 
     public void render(Batch batch, float delta) {
         batch.begin();
-        batch.draw(floor, -16, -16);
+        batch.draw(floor, -32, -32);
         batch.draw(walls, -32, -32);
         batch.end();
+
+        for (RoomExit exit : exites) {
+            exit.render(batch);
+        }
 
         updateEntities(batch, delta);
     }
@@ -83,19 +88,17 @@ public class Room {
     }
 
     public RoomExit.Direction getRandomEmptyDirection() {
-        List<RoomExit.Direction> directions = Arrays.asList(RoomExit.Direction.values());
-        List<RoomExit.Direction> emptyDirections = Arrays.asList(RoomExit.Direction.values());
+        List<RoomExit.Direction> emptyDirections = new ArrayList<>();
+        emptyDirections.add(RoomExit.Direction.DOWN_LEFT);
+        emptyDirections.add(RoomExit.Direction.DOWN_RIGHT);
+        emptyDirections.add(RoomExit.Direction.UP_LEFT);
+        emptyDirections.add(RoomExit.Direction.UP_RIGHT);
 
-        main : for (RoomExit exit : exites) {
-            for (RoomExit.Direction direction : directions) {
-                if (direction == exit.getDirection()) {
-                    continue main;
-                }
-            }
-            emptyDirections.add(exit.getDirection());
+        for (RoomExit exit : exites) {
+            emptyDirections.remove(exit.getDirection());
         }
 
-        return emptyDirections.get((int) (Math.random() * directions.size()));
+        return emptyDirections.get((int) (Math.random() * emptyDirections.size()));
     }
 
     public void parseStaticObjects(World world) {

@@ -2,7 +2,6 @@
   "animationType": "OTHER",
   "stateTime":0.03333333,
   "texturePaths": [
-    "textures/sandstorm/1.png",
     "textures/sandstorm/2.png",
     "textures/sandstorm/3.png",
     "textures/sandstorm/4.png",

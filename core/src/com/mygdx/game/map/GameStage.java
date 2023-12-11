@@ -38,7 +38,7 @@ public class GameStage {
         room.parseStaticObjects(world);
         rooms.add(room);
         currentRoom = room;*/
-        createRooms(5);
+        createRooms(8);
 
         loadSandStorm("scripts/sandstorm.json");
     }
@@ -73,8 +73,9 @@ public class GameStage {
                 randomRoom = rooms.get((int) (Math.random() * rooms.size));
             }
 
-            Vector2 deltaPosition = RoomExit.toVector2(randomRoom.getRandomEmptyDirection());
-            Vector2 newPosition = deltaPosition.add(randomRoom.getPosition());
+            RoomExit.Direction emptyDirection = randomRoom.getRandomEmptyDirection();
+            Vector2 deltaPosition = RoomExit.toVector2(emptyDirection);
+            Vector2 newPosition = new Vector2(randomRoom.getPosition()).add(deltaPosition);
             Room newRoom = new Room(newPosition);
             setExitesWithRounded(newRoom);
 
@@ -94,14 +95,14 @@ public class GameStage {
     private void setExitesWithRounded(Room room) {
         Room room1 = getRoomByPosition(new Vector2(1, 0).add(room.getPosition()));
         if (room1 != null) {
-            room.addExit(new RoomExit(RoomExit.Direction.UP_RIGHT, room1));
-            room1.addExit(new RoomExit(RoomExit.Direction.UP_RIGHT.getOpposite(), room));
+            room.addExit(new RoomExit(RoomExit.Direction.UP_LEFT, room1));
+            room1.addExit(new RoomExit(RoomExit.Direction.UP_LEFT.getOpposite(), room));
         }
 
         Room room2 = getRoomByPosition(new Vector2(0, 1).add(room.getPosition()));
         if (room2 != null) {
-            room.addExit(new RoomExit(RoomExit.Direction.UP_LEFT, room2));
-            room2.addExit(new RoomExit(RoomExit.Direction.UP_LEFT.getOpposite(), room));
+            room.addExit(new RoomExit(RoomExit.Direction.UP_RIGHT, room2));
+            room2.addExit(new RoomExit(RoomExit.Direction.UP_RIGHT.getOpposite(), room));
         }
 
         Room room3 = getRoomByPosition(new Vector2(-1, 0).add(room.getPosition()));

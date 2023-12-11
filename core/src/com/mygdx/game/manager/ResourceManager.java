@@ -74,8 +74,6 @@ public class ResourceManager {
                     Entity entity = EntityFactory.getInstance().getEntity(EntityFactory.EntityType.BASE_ENEMY, world);
                     entities.add(entity);
                     break;
-                case "slowenemy":
-                    break;
             }
         }
 
@@ -89,7 +87,7 @@ public class ResourceManager {
         Body body = world.createBody(bodyDef);
 
         CircleShape shape = new CircleShape();
-        shape.setPosition(new Vector2(7, 9));
+        shape.setPosition(Vector2.Zero);
         shape.setRadius(1);
         body.createFixture(shape, 1000);
 

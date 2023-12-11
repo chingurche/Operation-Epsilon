@@ -42,13 +42,13 @@ public class RoomExit {
     public static Vector2 toVector2(Direction drctn) {
         switch (drctn) {
             case UP_LEFT:
-                return Vector2.X;
+                return new Vector2(1, 0);
             case UP_RIGHT:
-                return Vector2.Y;
+                return new Vector2(0, 1);
             case DOWN_LEFT:
-                return Vector2.X.scl(-1f);
+                return new Vector2(-1, 0);
             case DOWN_RIGHT:
-                return Vector2.Y.scl(-1f);
+                return new Vector2(0, -1);
         }
         return null;
     }

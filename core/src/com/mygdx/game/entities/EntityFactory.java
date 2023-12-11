@@ -1,6 +1,7 @@
 package com.mygdx.game.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -47,14 +48,17 @@ public class EntityFactory {
                 entity = new Entity(new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
 
                 Body body = ResourceManager.createBody(world);
+                body.setUserData(entity);
                 entity.setBody(body);
 
                 entity.setEntityConfig(Entity.getEntityConfig("scripts/player.json"));
                 entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
+                entity.sendMessage(Component.MESSAGE.INIT_POSITION, json.toJson(entity.getEntityConfig()));
 
                 return entity;
             case BASE_ENEMY:
-                entity = new Entity(new EnemyPhysicsComponent(), new EnemyGraphicsComponent());
+                entity = new Entity(new EnemyPhysicsComponent(), new PlayerGraphicsComponent());
+
             default:
                 return null;
         }

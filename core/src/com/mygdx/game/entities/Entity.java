@@ -17,7 +17,13 @@ public class Entity {
         WALKING_FORWARD,
         WALKING_LEFT,
         WALKING_RIGHT,
-        WALKING_BACK
+        WALKING_BACK,
+        OTHER
+    }
+
+    public enum State {
+        IDLE,
+        WALKING
     }
 
     private Json json;

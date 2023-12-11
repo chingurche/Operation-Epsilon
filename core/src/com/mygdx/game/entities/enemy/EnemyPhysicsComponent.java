@@ -1,5 +1,6 @@
 package com.mygdx.game.entities.enemy;
 
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.components.PhysicsComponent;
 import com.mygdx.game.entities.Entity;
 
@@ -15,8 +16,8 @@ public class EnemyPhysicsComponent extends PhysicsComponent {
         }
 
         if (string.length == 2) {
-            if (string[0].equalsIgnoreCase(MESSAGE.CURRENT_POSITION.toString())) {
-
+            if (string[0].equalsIgnoreCase(MESSAGE.INIT_POSITION.toString())) {
+                body.setTransform(json.fromJson(Vector2.class, string[1]), 0);
             }
         }
     }

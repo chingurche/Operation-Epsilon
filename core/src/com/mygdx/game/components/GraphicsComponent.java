@@ -26,6 +26,7 @@ public abstract class GraphicsComponent extends ComponentSubject implements Comp
     protected Json json;
 
     private Hashtable<Entity.AnimationType, Animation<Texture>> animations = new Hashtable<>();
+    protected Entity.State currentState;
     private Animation<Texture> currentAnimation;
     protected Texture currentFrame;
     private Direction direction = Direction.FORWARD;
@@ -74,9 +75,20 @@ public abstract class GraphicsComponent extends ComponentSubject implements Comp
     }
 
     protected void updateAnimation() {
+        if (currentState == Entity.State.IDLE) {
+            currentAnimation = animations.get(Entity.AnimationType.IDLE);
+            return;
+        }
+
         switch (direction) {
             case FORWARD:
                 currentAnimation = animations.get(Entity.AnimationType.WALKING_FORWARD);
+                break;
+            case LEFT:
+                currentAnimation = animations.get(Entity.AnimationType.WALKING_LEFT);
+                break;
+            case RIGHT:
+                currentAnimation = animations.get(Entity.AnimationType.WALKING_RIGHT);
                 break;
             case BACK:
                 currentAnimation = animations.get(Entity.AnimationType.WALKING_BACK);

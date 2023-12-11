@@ -26,6 +26,13 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 
     @Override
     public void update(Entity entity, float delta) {
+        if (direction.equals(Vector2.Zero)) {
+            entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.IDLE));
+        }
+        else {
+            entity.sendMessage(MESSAGE.CURRENT_STATE, json.toJson(Entity.State.WALKING));
+        }
+
         body.setLinearVelocity(new Vector2(direction).scl(speed * delta));
         entity.sendMessage(MESSAGE.CURRENT_POSITION, json.toJson(body.getPosition()));
     }

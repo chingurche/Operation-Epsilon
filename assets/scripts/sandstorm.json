@@ -1,0 +1,29 @@
+{
+  "animationType": "OTHER",
+  "stateTime":0.03333333,
+  "texturePaths": [
+    "textures/sandstorm/1.png",
+    "textures/sandstorm/2.png",
+    "textures/sandstorm/3.png",
+    "textures/sandstorm/4.png",
+    "textures/sandstorm/5.png",
+    "textures/sandstorm/6.png",
+    "textures/sandstorm/7.png",
+    "textures/sandstorm/8.png",
+    "textures/sandstorm/9.png",
+    "textures/sandstorm/10.png",
+    "textures/sandstorm/11.png",
+    "textures/sandstorm/12.png",
+    "textures/sandstorm/13.png",
+    "textures/sandstorm/14.png",
+    "textures/sandstorm/15.png",
+    "textures/sandstorm/16.png",
+    "textures/sandstorm/17.png",
+    "textures/sandstorm/18.png",
+    "textures/sandstorm/19.png",
+    "textures/sandstorm/20.png",
+    "textures/sandstorm/21.png",
+    "textures/sandstorm/22.png",
+    "textures/sandstorm/23.png"
+  ]
+}

@@ -26,6 +26,10 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
             if (string[0].equalsIgnoreCase(MESSAGE.CURRENT_POSITION.toString())) {
                 currentPosition = json.fromJson(Vector2.class, string[1]);
             }
+            if (string[0].equalsIgnoreCase(MESSAGE.CURRENT_STATE.toString())) {
+                currentState = json.fromJson(Entity.State.class, string[1]);
+                updateAnimation();
+            }
             if (string[0].equalsIgnoreCase(MESSAGE.ENTITY_DIRECTION.toString())) {
                 setDirection(json.fromJson(Vector2.class, string[1]));
             }
@@ -47,7 +51,7 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
 
 
         batch.begin();
-        batch.draw(currentFrame, currentPosition.x * PPM + 48, currentPosition.y * PPM + 64, 16, 16);
+        batch.draw(currentFrame, currentPosition.x * PPM - 8, currentPosition.y * PPM - 8, 16, 16);
         batch.end();
     }
 }

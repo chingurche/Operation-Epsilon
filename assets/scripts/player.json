@@ -1,11 +1,37 @@
 {
   "animationConfigs":[
     {
+      "animationType": "IDLE",
+      "stateTime":0.25,
+      "texturePaths": [
+        "textures/player/idle1.png",
+        "textures/player/idle2.png",
+        "textures/player/idle3.png",
+        "textures/player/idle4.png"
+      ]
+    },
+    {
       "animationType": "WALKING_FORWARD",
       "stateTime":0.1,
       "texturePaths": [
         "textures/player/walking_forward1.png",
         "textures/player/walking_forward2.png"
+      ]
+    },
+    {
+      "animationType": "WALKING_LEFT",
+      "stateTime":0.1,
+      "texturePaths": [
+        "textures/player/walking_left1.png",
+        "textures/player/walking_left2.png"
+      ]
+    },
+    {
+      "animationType": "WALKING_RIGHT",
+      "stateTime":0.1,
+      "texturePaths": [
+        "textures/player/walking_right1.png",
+        "textures/player/walking_right2.png"
       ]
     },
     {

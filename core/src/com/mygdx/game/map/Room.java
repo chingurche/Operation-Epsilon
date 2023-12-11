@@ -16,14 +16,14 @@ import java.util.List;
 public class Room {
     private TiledMap map;
     private final Vector2 position;
-    private Array<RoomExit> exites;
+    private Array<RoomExit> exites = new Array<>();
 
 
     private Texture floor;
     private Texture walls;
 
     private Array<Body> staticBodies = new Array<>();
-    private Array<Entity> enemyEntities;
+    private Array<Entity> entities = new Array<>();
 
     public Room(Vector2 position) {
         String randomName = "location/room" + (int) (Math.random() * 2 + 1) + ".tmx";
@@ -38,6 +38,15 @@ public class Room {
         floor = ResourceManager.getTextureAsset(randomFloorName);
 
         this.position = position;
+    }
+
+    public void render(Batch batch, float delta) {
+        batch.begin();
+        batch.draw(floor, -16, -16);
+        batch.draw(walls, -32, -32);
+        batch.end();
+
+        updateEntities(batch, delta);
     }
 
     public Vector2 getPosition() {
@@ -75,16 +84,18 @@ public class Room {
 
     public RoomExit.Direction getRandomEmptyDirection() {
         List<RoomExit.Direction> directions = Arrays.asList(RoomExit.Direction.values());
+        List<RoomExit.Direction> emptyDirections = Arrays.asList(RoomExit.Direction.values());
 
-        for (RoomExit exit : exites) {
+        main : for (RoomExit exit : exites) {
             for (RoomExit.Direction direction : directions) {
                 if (direction == exit.getDirection()) {
-                    directions.remove(direction);
+                    continue main;
                 }
             }
+            emptyDirections.add(exit.getDirection());
         }
 
-        return directions.get((int) (Math.random() * directions.size()));
+        return emptyDirections.get((int) (Math.random() * directions.size()));
     }
 
     public void parseStaticObjects(World world) {
@@ -97,9 +108,13 @@ public class Room {
         }
     }
 
-    public void updateEnemyEntities(Batch batch, float delta) {
-        for (int i = 0; i < enemyEntities.size; i++) {
-            enemyEntities.get(i).update(batch, delta);
+    public void parseEntities(World world) {
+
+    }
+
+    private void updateEntities(Batch batch, float delta) {
+        for (int i = 0; i < entities.size; i++) {
+            entities.get(i).update(batch, delta);
         }
     }
 }

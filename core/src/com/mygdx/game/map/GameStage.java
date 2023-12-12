@@ -15,6 +15,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.mygdx.game.components.Component;
+import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.EntityConfig;
 import com.mygdx.game.manager.ResourceManager;
 
@@ -24,21 +26,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GameStage {
+    private Json json;
     private World world;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Animation<Texture> sandStormAnimation;
 
     private Array<Room> rooms = new Array<>();
     private Room currentRoom;
+    private Entity player;
 
     public GameStage(World world) {
+        json = new Json();
+
         this.world = world;
 
-        /*Room room = new Room(new Vector2(0, 0));
-        room.parseStaticObjects(world);
-        rooms.add(room);
-        currentRoom = room;*/
-        createRooms(8);
+        createRooms(16);
 
         loadSandStorm("scripts/sandstorm.json");
     }
@@ -119,6 +121,25 @@ public class GameStage {
     }
 
     public void changeRoom(RoomExit.Direction direction) {
+        if (getRoomByPosition(RoomExit.toVector2(direction).add(getCurrentRoom().getPosition())) == null) {
+            return;
+        }
+
+        switch (direction) {
+            case UP_LEFT:
+                player.sendMessage(Component.MESSAGE.INIT_POSITION, json.toJson(new Vector2(16.5f, 0.5f)));
+                break;
+            case UP_RIGHT:
+                player.sendMessage(Component.MESSAGE.INIT_POSITION, json.toJson(new Vector2(0.5f, 0.5f)));
+                break;
+            case DOWN_LEFT:
+                player.sendMessage(Component.MESSAGE.INIT_POSITION, json.toJson(new Vector2(16.5f, 8.5f)));
+                break;
+            case DOWN_RIGHT:
+                player.sendMessage(Component.MESSAGE.INIT_POSITION, json.toJson(new Vector2(0.5f, 8.5f)));
+                break;
+        }
+
         currentRoom.destroyStaticObjects(world);
         setCurrentRoom(currentRoom.getExitByDirection(direction).getNextRoom());
     }
@@ -128,6 +149,10 @@ public class GameStage {
         currentRoom.parseStaticObjects(world);
         currentRoom.parseEntities(world);
         mapRenderer = new OrthogonalTiledMapRenderer(currentRoom.getMap());
+    }
+
+    public void setPlayer(Entity player) {
+        this.player = player;
     }
 
     private void loadSandStorm(String configPath) {

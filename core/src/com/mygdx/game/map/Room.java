@@ -109,6 +109,7 @@ public class Room {
         for (Body body : staticBodies) {
             world.destroyBody(body);
         }
+        staticBodies.clear();
     }
 
     public void parseEntities(World world) {

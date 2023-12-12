@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.mygdx.game.components.BattleComponent;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.GraphicsComponent;
 import com.mygdx.game.components.PhysicsComponent;
@@ -31,17 +32,20 @@ public class Entity {
     private Array<Component> components;
     private GraphicsComponent graphicsComponent;
     private PhysicsComponent physicsComponent;
+    private BattleComponent battleComponent;
 
-    public Entity(PhysicsComponent physicsComponent, GraphicsComponent graphicsComponent) {
+    public Entity(PhysicsComponent physicsComponent, GraphicsComponent graphicsComponent, BattleComponent battleComponent) {
         json = new Json();
 
         components = new Array<>(5);
 
         this.physicsComponent = physicsComponent;
         this.graphicsComponent = graphicsComponent;
+        this.battleComponent = battleComponent;
 
         components.add(physicsComponent);
         components.add(graphicsComponent);
+        components.add(battleComponent);
     }
 
     public void setBody(Body body) {

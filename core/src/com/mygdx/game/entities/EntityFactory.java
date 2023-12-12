@@ -9,9 +9,11 @@ import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.entities.enemy.EnemyGraphicsComponent;
 import com.mygdx.game.entities.enemy.EnemyPhysicsComponent;
+import com.mygdx.game.entities.player.PlayerBattleComponent;
 import com.mygdx.game.entities.player.PlayerGraphicsComponent;
 import com.mygdx.game.entities.player.PlayerPhysicsComponent;
 import com.mygdx.game.manager.ResourceManager;
+import com.mygdx.game.physics.PhysicsBodyData;
 
 import java.util.Hashtable;
 
@@ -45,19 +47,18 @@ public class EntityFactory {
         Entity entity;
         switch (entityType) {
             case PLAYER:
-                entity = new Entity(new PlayerPhysicsComponent(), new PlayerGraphicsComponent());
+                entity = new Entity(new PlayerPhysicsComponent(), new PlayerGraphicsComponent(), new PlayerBattleComponent());
 
                 Body body = ResourceManager.createBody(world);
-                body.setUserData(entity);
+                body.setUserData(new PhysicsBodyData(PhysicsBodyData.DataType.PLAYER_ENTITY, entity));
                 entity.setBody(body);
 
                 entity.setEntityConfig(Entity.getEntityConfig("scripts/player.json"));
                 entity.sendMessage(Component.MESSAGE.LOAD_ANIMATIONS, json.toJson(entity.getEntityConfig()));
-                entity.sendMessage(Component.MESSAGE.INIT_POSITION, json.toJson(entity.getEntityConfig()));
 
                 return entity;
             case BASE_ENEMY:
-                entity = new Entity(new EnemyPhysicsComponent(), new PlayerGraphicsComponent());
+                entity = new Entity(new EnemyPhysicsComponent(), new PlayerGraphicsComponent(), new PlayerBattleComponent());
 
             default:
                 return null;

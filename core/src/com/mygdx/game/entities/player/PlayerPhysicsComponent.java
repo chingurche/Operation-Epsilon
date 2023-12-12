@@ -18,7 +18,10 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
         }
 
         if (string.length == 2) {
-            if (string[0].equalsIgnoreCase(MESSAGE.ENTITY_DIRECTION.toString())) {
+            if (string[0].equalsIgnoreCase(MESSAGE.INIT_POSITION.toString())) {
+                body.setTransform(json.fromJson(Vector2.class, string[1]), 0);
+            }
+            else if (string[0].equalsIgnoreCase(MESSAGE.ENTITY_DIRECTION.toString())) {
                 direction = json.fromJson(Vector2.class, string[1]);
             }
         }

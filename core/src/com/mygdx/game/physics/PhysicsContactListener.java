@@ -11,17 +11,24 @@ public class PhysicsContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Object body1 = contact.getFixtureA().getBody().getUserData();
         Object body2 = contact.getFixtureB().getBody().getUserData();
+        PhysicsBodyData data1 = null;
+        PhysicsBodyData data2 = null;
 
-        if (!(body1 instanceof PhysicsBodyData && body2 instanceof PhysicsBodyData)
-                || (body1 == null || body2 == null)) {
-            return;
+        if (body1 != null) {
+            data1 = (PhysicsBodyData) body1;
         }
 
-        PhysicsBodyData data1 = (PhysicsBodyData) body1;
-        PhysicsBodyData data2 = (PhysicsBodyData) body2;
+        if (body2 != null) {
+            data2 = (PhysicsBodyData) body2;
+        }
 
-        data1.interact(data2);
-        data2.interact(data1);
+        if (body1 != null) {
+            data1.interact(data2);
+        }
+
+        if (body2 != null) {
+            data2.interact(data1);
+        }
     }
 
     @Override

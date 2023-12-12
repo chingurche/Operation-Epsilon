@@ -26,8 +26,8 @@ public class Room {
     private Array<Body> staticBodies = new Array<>();
     private Array<Entity> entities = new Array<>();
 
-    public Room(Vector2 position) {
-        String randomName = "location/room" + (int) (Math.random() * 2 + 1) + ".tmx";
+    public Room(Vector2 position, World world) {
+        String randomName = "location/room" + (int) (Math.random() * 3 + 1) + ".tmx";
         ResourceManager.loadMapAsset(randomName);
         map = ResourceManager.getMapAsset(randomName);
 
@@ -38,7 +38,15 @@ public class Room {
         ResourceManager.loadTextureAsset(randomFloorName);
         floor = ResourceManager.getTextureAsset(randomFloorName);
 
+        parseStaticObjects(world);
+
         this.position = position;
+    }
+
+    public void setActive(boolean flag) {
+        for (Body body : staticBodies) {
+            body.setActive(flag);
+        }
     }
 
     public void render(Batch batch, float delta) {
@@ -60,14 +68,6 @@ public class Room {
 
     public TiledMap getMap() {
         return map;
-    }
-
-    public Texture getFloor() {
-        return floor;
-    }
-
-    public Texture getWalls() {
-        return walls;
     }
 
     public void addExit(RoomExit exit) {
@@ -103,13 +103,6 @@ public class Room {
 
     public void parseStaticObjects(World world) {
         staticBodies = ResourceManager.parseStaticObjects(map, world);
-    }
-
-    public void destroyStaticObjects(World world) {
-        for (Body body : staticBodies) {
-            world.destroyBody(body);
-        }
-        staticBodies.clear();
     }
 
     public void parseEntities(World world) {

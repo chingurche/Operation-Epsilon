@@ -64,7 +64,7 @@ public class RoomExit {
         return room;
     }
 
-    public static Vector2 toVector2(Direction direction) {
+    public static Vector2 toCursedVector2(Direction direction) {
         switch (direction) {
             case UP_LEFT:
                 return new Vector2(1, 0);

@@ -33,9 +33,6 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
     private final float cameraViewport = 6;
     private OrthographicCamera camera;
     private OrthographicCamera hudCamera;
-    private World world;
-    private PhysicsContactListener physicsContactListener;
-    private Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
     private Json json;
 
     private GameStage gameStage;
@@ -47,9 +44,6 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
 
         json = new Json();
 
-        world = new World(new Vector2(0, 0), false);
-        box2DDebugRenderer.SHAPE_STATIC.set(0, 0, 255, 255);
-        box2DDebugRenderer.SHAPE_AWAKE.set(0, 0, 255, 255);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, screenSize.x / cameraViewport, screenSize.y / cameraViewport);
@@ -57,12 +51,15 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         hudCamera = new OrthographicCamera();
         hudCamera.setToOrtho(true, screenSize.x, screenSize.y);
 
-        player = EntityFactory.getInstance().getEntity(EntityFactory.EntityType.PLAYER, world);
+
+        gameStage = new GameStage();
+        gameStage.setCamera(camera);
+
+        player = EntityFactory.getInstance().getEntity(EntityFactory.EntityType.PLAYER, gameStage.getWorld());
         player.sendMessage(Component.MESSAGE.INIT_POSITION, json.toJson(new Vector2(16, 8)));
 
-        gameStage = new GameStage(world);
         gameStage.setPlayer(player);
-        createWorld();
+
 
         joystick = new Joystick(300, screenSize.y - 300, 200);
 
@@ -81,13 +78,11 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
     }
 
     private void update(float delta) {
-        world.step(1 / 60f, 6, 2);
         camera.position.set(new Vector3(128, 64, 0));
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
         hudBatch.setProjectionMatrix(hudCamera.combined);
-        gameStage.setMapRendererView(camera);
         gameTime += delta;
     }
 
@@ -103,8 +98,6 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         player.update(batch, delta);
 
         gameStage.renderEffects(hudBatch, delta);
-
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
 
         joystick.render(hudBatch);
     }
@@ -128,53 +121,5 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         joystick.end();
         player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(Vector2.Zero));
         return true;
-    }
-
-    private void createWorld() {
-        physicsContactListener = new PhysicsContactListener();
-        world.setContactListener(physicsContactListener);
-
-        //стены
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body1 = world.createBody(bodyDef);
-        Body body2 = world.createBody(bodyDef);
-        Body body3 = world.createBody(bodyDef);
-        Body body4 = world.createBody(bodyDef);
-
-        body1.createFixture(PhysicsManager.createRectangleShape(100, 0.5f), 1000);
-        body1.setTransform(0, -0.5f, 0);
-        body2.createFixture(PhysicsManager.createRectangleShape(100, 0.5f), 1000);
-        body2.setTransform(0, 16.5f, 0);
-        body3.createFixture(PhysicsManager.createRectangleShape(0.5f, 100), 1000);
-        body3.setTransform(-0.5f, 0, 0);
-        body4.createFixture(PhysicsManager.createRectangleShape(0.5f, 100), 1000);
-        body4.setTransform(32.5f, 0, 0);
-
-        //выходы
-        Body exit1 = world.createBody(bodyDef);
-        Body exit2 = world.createBody(bodyDef);
-        Body exit3 = world.createBody(bodyDef);
-        Body exit4 = world.createBody(bodyDef);
-
-        exit1.createFixture(PhysicsManager.createRectangleShape(0.5f, 0.5f), 1000);
-        ExitInfo exitInfo1 = new ExitInfo(RoomExit.Direction.DOWN_LEFT, gameStage);
-        exit1.setUserData(new PhysicsBodyData(PhysicsBodyData.DataType.ROOM_TRIGGER, exitInfo1));
-        exit1.setTransform(0, 0, 45);
-
-        exit2.createFixture(PhysicsManager.createRectangleShape(0.5f, 0.5f), 1000);
-        ExitInfo exitInfo2 = new ExitInfo(RoomExit.Direction.UP_LEFT, gameStage);
-        exit2.setUserData(new PhysicsBodyData(PhysicsBodyData.DataType.ROOM_TRIGGER, exitInfo2));
-        exit2.setTransform(0, 16f, 45);
-
-        exit3.createFixture(PhysicsManager.createRectangleShape(0.5f, 0.5f), 1000);
-        ExitInfo exitInfo3 = new ExitInfo(RoomExit.Direction.DOWN_RIGHT, gameStage);
-        exit3.setUserData(new PhysicsBodyData(PhysicsBodyData.DataType.ROOM_TRIGGER, exitInfo3));
-        exit3.setTransform(32f, 0, 45);
-
-        exit4.createFixture(PhysicsManager.createRectangleShape(0.5f, 0.5f), 1000);
-        ExitInfo exitInfo4 = new ExitInfo(RoomExit.Direction.UP_RIGHT, gameStage);
-        exit4.setUserData(new PhysicsBodyData(PhysicsBodyData.DataType.ROOM_TRIGGER, exitInfo4));
-        exit4.setTransform(32f, 16f, 45);
     }
 }

@@ -25,6 +25,8 @@ import com.mygdx.game.physics.PhysicsBodyData;
 import com.mygdx.game.physics.PhysicsContactListener;
 import com.mygdx.game.physics.PhysicsManager;
 import com.mygdx.game.physics.info.ExitInfo;
+import com.mygdx.game.weapons.RangedWeapon;
+import com.mygdx.game.weapons.Weapon;
 
 import org.w3c.dom.Text;
 

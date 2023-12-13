@@ -47,7 +47,7 @@ public class EntityFactory {
         Entity entity;
         switch (entityType) {
             case PLAYER:
-                entity = new Entity(new PlayerPhysicsComponent(), new PlayerGraphicsComponent(), new PlayerBattleComponent());
+                entity = new Entity(new PlayerPhysicsComponent(), new PlayerGraphicsComponent(), new PlayerBattleComponent(world));
 
                 Body body = ResourceManager.createBody(world);
                 body.setUserData(new PhysicsBodyData(PhysicsBodyData.DataType.PLAYER_ENTITY, entity));
@@ -58,7 +58,7 @@ public class EntityFactory {
 
                 return entity;
             case BASE_ENEMY:
-                entity = new Entity(new EnemyPhysicsComponent(), new PlayerGraphicsComponent(), new PlayerBattleComponent());
+                entity = new Entity(new EnemyPhysicsComponent(), new PlayerGraphicsComponent(), new PlayerBattleComponent(world));
 
             default:
                 return null;

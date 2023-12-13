@@ -1,13 +1,37 @@
 package com.mygdx.game.weapons;
 
 public class WeaponConfig {
-    private float interval;
+    private String texturePath;
 
-    public WeaponConfig(WeaponConfig config) {
-        interval = config.getInterval();
+    private float damage;
+    private float maxInterval;
+    private int maxMagazineSize;
+
+    public WeaponConfig() {
+
     }
 
-    public float getInterval() {
-        return interval;
+    public WeaponConfig(WeaponConfig config) {
+        texturePath = config.texturePath;
+
+        damage = config.getDamage();
+        maxInterval = config.getMaxInterval();
+        maxMagazineSize = config.getMaxMagazineSize();
+    }
+
+    public String getTexturePath() {
+        return texturePath;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public float getMaxInterval() {
+        return maxInterval;
+    }
+
+    public int getMaxMagazineSize() {
+        return maxMagazineSize;
     }
 }

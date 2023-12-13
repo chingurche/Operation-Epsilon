@@ -27,7 +27,7 @@ public class Room {
     private Array<Entity> entities = new Array<>();
 
     public Room(Vector2 position, World world) {
-        String randomName = "location/room" + (int) (Math.random() * 3 + 1) + ".tmx";
+        String randomName = "location/room" + (int) (Math.random() * 5 + 1) + ".tmx";
         ResourceManager.loadMapAsset(randomName);
         map = ResourceManager.getMapAsset(randomName);
 

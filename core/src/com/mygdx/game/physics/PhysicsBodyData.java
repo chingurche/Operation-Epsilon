@@ -30,7 +30,10 @@ public class PhysicsBodyData {
                 }
                 break;
             case BULLET:
+                if (other != null && other.getDataType() == DataType.PLAYER_ENTITY) { return; }
+
                 RangedWeapon.Bullet bullet = (RangedWeapon.Bullet) data;
+                bullet.isActive = false;
         }
     }
 

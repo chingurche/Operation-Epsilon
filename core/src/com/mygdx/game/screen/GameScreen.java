@@ -28,6 +28,7 @@ import com.mygdx.game.physics.PhysicsManager;
 import com.mygdx.game.map.GameStage;
 import com.mygdx.game.physics.info.ExitInfo;
 import com.mygdx.game.utils.Joystick;
+import com.mygdx.game.weapons.RangedWeapon;
 
 public class GameScreen extends BaseScreen implements ComponentObserver {
     private final float cameraViewport = 6;
@@ -36,7 +37,8 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
     private Json json;
 
     private GameStage gameStage;
-    private Joystick joystick;
+    private Joystick moveJoystick;
+    private Joystick attackJoystick;
     private Entity player;
 
     public GameScreen(MyGdxGame gdxGame, Batch batch, Batch hudBatch) {
@@ -61,7 +63,8 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         gameStage.setPlayer(player);
 
 
-        joystick = new Joystick(300, screenSize.y - 300, 200);
+        moveJoystick = new Joystick(300, screenSize.y - 300, 200);
+        attackJoystick = new Joystick(screenSize.x - 300, screenSize.y - 300, 200);
 
         Gdx.input.setInputProcessor(this);
     }
@@ -75,6 +78,7 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
     public void show() {
         notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.MENU_THEME);
         notify(AudioObserver.AudioCommand.MUSIC_PLAY_LOOP, AudioObserver.AudioTypeEvent.MENU_THEME);
+        notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.SHOOT);
     }
 
     private void update(float delta) {
@@ -99,27 +103,50 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
 
         gameStage.renderEffects(hudBatch, delta);
 
-        joystick.render(hudBatch);
+        moveJoystick.render(hudBatch);
+        attackJoystick.render(hudBatch);
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        joystick.start(screenX, screenY);
-        player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(joystick.getDirection()));
-        return true;
+        if (screenX < screenSize.x / 2) {
+            moveJoystick.start(screenX, screenY);
+            player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(moveJoystick.getDirection()));
+            return true;
+        }
+        else {
+            attackJoystick.start(screenX, screenY);
+            player.sendMessage(Component.MESSAGE.ATTACK_STATUS, json.toJson(true));
+            player.sendMessage(Component.MESSAGE.ATTACK_DIRECTION, json.toJson(attackJoystick.getDirection()));
+            return true;
+        }
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        joystick.dragged(screenX, screenY);
-        player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(joystick.getDirection()));
-        return true;
+        if (screenX < screenSize.x / 2) {
+            moveJoystick.dragged(screenX, screenY);
+            player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(moveJoystick.getDirection()));
+            return true;
+        }
+        else {
+            attackJoystick.dragged(screenX, screenY);
+            player.sendMessage(Component.MESSAGE.ATTACK_DIRECTION, json.toJson(attackJoystick.getDirection()));
+            return true;
+        }
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        joystick.end();
-        player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(Vector2.Zero));
-        return true;
+        if (screenX < screenSize.x / 2) {
+            moveJoystick.end();
+            player.sendMessage(Component.MESSAGE.ENTITY_DIRECTION, json.toJson(Vector2.Zero));
+            return true;
+        }
+        else {
+            attackJoystick.end();
+            player.sendMessage(Component.MESSAGE.ATTACK_STATUS, json.toJson(false));
+            return true;
+        }
     }
 }

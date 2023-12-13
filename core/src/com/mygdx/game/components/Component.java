@@ -8,7 +8,9 @@ public interface Component {
         CURRENT_POSITION,
         CURRENT_STATE,
         ENTITY_DIRECTION,
-        LOAD_ANIMATIONS
+        LOAD_ANIMATIONS,
+        ATTACK_STATUS,
+        ATTACK_DIRECTION
     }
 
     void receiveMessage(String message);

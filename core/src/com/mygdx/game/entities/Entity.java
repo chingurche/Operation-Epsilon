@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.components.BattleComponent;
@@ -28,6 +29,7 @@ public class Entity {
     }
 
     private Json json;
+    private World world;
     private EntityConfig entityConfig;
     private Array<Component> components;
     private GraphicsComponent graphicsComponent;
@@ -50,6 +52,11 @@ public class Entity {
 
     public void setBody(Body body) {
         physicsComponent.setBody(body);
+        world = body.getWorld();
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public void setEntityConfig(EntityConfig config) {
@@ -63,6 +70,7 @@ public class Entity {
     public void update(Batch batch, float delta) {
         graphicsComponent.update(this, batch, delta);
         physicsComponent.update(this, delta);
+        battleComponent.update(this, batch, delta);
     }
 
     public void sendMessage(Component.MESSAGE type, String ... args) {

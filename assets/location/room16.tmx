@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="6">
+ <tileset firstgid="1" source="spritesheet.tsx"/>
+ <layer id="1" name="Слой тайлов 1" width="16" height="8">
+  <data encoding="base64">
+   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAADAAAABQAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAwAAAAUAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+  </data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="1" x="0" y="32">
+   <polygon points="0,0 16,0 16,64 0,64 0,0"/>
+  </object>
+  <object id="2" x="112" y="0">
+   <polygon points="0,0 0,16 16,16 32,16 32,0 0,0"/>
+  </object>
+  <object id="3" x="256" y="32">
+   <polygon points="0,0 -16,0 -16,64 0,64"/>
+  </object>
+  <object id="4" x="112" y="112">
+   <polygon points="0,0 0,16 32,16 32,0 0,0"/>
+  </object>
+  <object id="5" x="112" y="48">
+   <polygon points="0,0 0,32 32,32 32,0 0,0"/>
+  </object>
+ </objectgroup>
+</map>

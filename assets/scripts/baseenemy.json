@@ -1,0 +1,48 @@
+{
+  "maxHealthPoints": 100,
+  "speed": 500,
+  "animationConfigs":[
+    {
+      "animationType": "IDLE",
+      "stateTime":0.25,
+      "texturePaths": [
+        "textures/entities/player/idle1.png",
+        "textures/entities/player/idle2.png",
+        "textures/entities/player/idle3.png",
+        "textures/entities/player/idle4.png"
+      ]
+    },
+    {
+      "animationType": "WALKING_FORWARD",
+      "stateTime":0.2,
+      "texturePaths": [
+        "textures/entities/baseenemy/walking_forward1.png",
+        "textures/entities/baseenemy/walking_forward2.png"
+      ]
+    },
+    {
+      "animationType": "WALKING_LEFT",
+      "stateTime":0.2,
+      "texturePaths": [
+        "textures/entities/baseenemy/walking_left1.png",
+        "textures/entities/baseenemy/walking_left2.png"
+      ]
+    },
+    {
+      "animationType": "WALKING_RIGHT",
+      "stateTime":0.2,
+      "texturePaths": [
+        "textures/entities/baseenemy/walking_right1.png",
+        "textures/entities/baseenemy/walking_right2.png"
+      ]
+    },
+    {
+      "animationType": "WALKING_BACK",
+      "stateTime":0.2,
+      "texturePaths": [
+        "textures/entities/baseenemy/walking_back1.png",
+        "textures/entities/baseenemy/walking_back2.png"
+      ]
+    }
+  ]
+}

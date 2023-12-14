@@ -11,10 +11,10 @@ import com.mygdx.game.manager.ResourceManager;
 public abstract class Weapon {
     protected WeaponConfig weaponConfig;
     protected Vector2 position;
-    protected Vector2 direction;
+    protected Vector2 direction = new Vector2(0, 0);
     protected Texture texture;
 
-    protected float damage;
+    protected int damage;
     protected float maxInterval;
     protected float interval = 0;
 

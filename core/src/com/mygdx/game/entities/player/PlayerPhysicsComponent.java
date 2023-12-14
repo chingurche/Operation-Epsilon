@@ -5,10 +5,11 @@ import com.badlogic.gdx.physics.box2d.Transform;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.PhysicsComponent;
 import com.mygdx.game.entities.Entity;
+import com.mygdx.game.entities.EntityConfig;
 
 public class PlayerPhysicsComponent extends PhysicsComponent {
     private Vector2 direction = new Vector2(0, 0);
-    private float speed = 800;
+    private float speed;
 
     private boolean initNewPosition;
     private Vector2 newPosition;
@@ -25,9 +26,12 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
             if (string[0].equalsIgnoreCase(MESSAGE.INIT_POSITION.toString())) {
                 newPosition = json.fromJson(Vector2.class, string[1]);
                 initNewPosition = true;
-            }
-            else if (string[0].equalsIgnoreCase(MESSAGE.ENTITY_DIRECTION.toString())) {
+            } else if (string[0].equalsIgnoreCase(MESSAGE.ENTITY_DIRECTION.toString())) {
                 direction = json.fromJson(Vector2.class, string[1]);
+            } else if (string[0].equalsIgnoreCase(MESSAGE.LOAD_CONFIG.toString())) {
+                EntityConfig config = json.fromJson(EntityConfig.class, string[1]);
+
+                speed = config.getSpeed();
             }
         }
     }

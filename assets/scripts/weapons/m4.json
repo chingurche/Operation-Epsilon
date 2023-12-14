@@ -1,0 +1,6 @@
+{
+  "texturePath": "textures/weapons/gun7.png",
+  "sound": "SHOOT1",
+  "damage": 25,
+  "maxInterval": 0.15
+}

@@ -47,7 +47,7 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
 
     @Override
     public void update(Entity entity, Batch batch, float delta) {
-        updateFrame(delta);
+        updateFrame();
 
 
         batch.begin();

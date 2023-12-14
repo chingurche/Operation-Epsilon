@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
+ <tileset firstgid="1" source="spritesheet.tsx"/>
+ <layer id="1" name="Слой тайлов 1" width="16" height="8">
+  <data encoding="base64">
+   AAAAAAAAAAAAAAAABQAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAACAAAABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABQAAAAUAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+  </data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="1" x="48" y="0">
+   <polygon points="0,0 0,16 16,16 32,16 32,0 0,0"/>
+  </object>
+  <object id="6" x="208" y="64">
+   <polygon points="0,0 0,-16 -16,-16 -16,0 0,0"/>
+  </object>
+  <object id="7" x="96" y="128">
+   <polygon points="0,0 0,-16 32,-16 48,-16 48,0 0,0"/>
+  </object>
+  <object id="8" x="112" y="80">
+   <polygon points="0,0 0,-32 16,-32 16,-16 16,0"/>
+  </object>
+  <object id="9" x="176" y="16">
+   <polygon points="0,0 32,0 32,-16 0,-16 0,0"/>
+  </object>
+  <object id="10" x="208.056" y="47.3122">
+   <polygon points="0,0 15.944,0.687826 15.944,-15.3122 -0.0560179,-15.3122"/>
+  </object>
+  <object id="11" x="0" y="48">
+   <polygon points="0,0 0,32 16,32 16,0 0,0"/>
+  </object>
+  <object id="12" x="48" y="48">
+   <polygon points="0,0 0,16 16,16 16,0 0,0"/>
+  </object>
+  <object id="13" x="32" y="48">
+   <polygon points="0,0 16,0 16,-16 0,-16 0,0"/>
+  </object>
+  <object id="14" x="240" y="80">
+   <polygon points="0,0 0,-32 16,-32 16,0"/>
+  </object>
+ </objectgroup>
+</map>

@@ -1,5 +1,7 @@
 package com.mygdx.game.physics;
 
+import com.badlogic.gdx.utils.Json;
+import com.mygdx.game.components.Component;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.physics.info.ExitInfo;
 import com.mygdx.game.weapons.RangedWeapon;
@@ -12,10 +14,14 @@ public class PhysicsBodyData {
         ENEMY_ENTITY
     }
 
+    private Json json;
+
     private Object data;
     private DataType dataType;
 
     public PhysicsBodyData(DataType dataType, Object data) {
+        json = new Json();
+
         this.dataType = dataType;
         this.data = data;
     }
@@ -33,6 +39,12 @@ public class PhysicsBodyData {
                 if (other != null && other.getDataType() == DataType.PLAYER_ENTITY) { return; }
 
                 RangedWeapon.Bullet bullet = (RangedWeapon.Bullet) data;
+
+                if (other != null && other.getDataType() == DataType.ENEMY_ENTITY) {
+                    Entity enemy = (Entity) other.getData();
+                    enemy.sendMessage(Component.MESSAGE.GET_DAMAGE, json.toJson(bullet.getDamage()));
+                }
+
                 bullet.isActive = false;
         }
     }

@@ -3,6 +3,8 @@ package com.mygdx.game.entities;
 import java.io.Serializable;
 
 public class EntityConfig {
+    private int maxHealthPoints;
+    private float speed;
     private AnimationConfig[] animationConfigs;
 
     public EntityConfig() {
@@ -10,6 +12,8 @@ public class EntityConfig {
     }
 
     public EntityConfig(EntityConfig config) {
+        maxHealthPoints = config.getMaxHealthPoints();
+        speed = config.getSpeed();
         animationConfigs = config.getAnimationConfigs();
     }
 
@@ -40,6 +44,14 @@ public class EntityConfig {
         public String[] getTexturePaths() {
             return texturePaths;
         }
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public int getMaxHealthPoints() {
+        return maxHealthPoints;
     }
 
     public AnimationConfig[] getAnimationConfigs() {

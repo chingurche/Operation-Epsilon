@@ -13,5 +13,9 @@ public abstract class PhysicsComponent extends ComponentSubject implements Compo
         this.body = body;
     }
 
+    public Body getBody() {
+        return body;
+    }
+
     public abstract void update(Entity entity, float delta);
 }

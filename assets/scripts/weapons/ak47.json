@@ -1,6 +1,6 @@
 {
   "texturePath": "textures/weapons/gun1.png",
-  "damage": 4,
-  "maxInterval": 0.1,
-  "maxMagazineSize": 15
+  "sound": "SHOOT1",
+  "damage": 20,
+  "maxInterval": 0.2
 }

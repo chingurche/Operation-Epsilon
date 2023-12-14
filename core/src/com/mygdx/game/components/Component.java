@@ -9,8 +9,12 @@ public interface Component {
         CURRENT_STATE,
         ENTITY_DIRECTION,
         LOAD_ANIMATIONS,
+        LOAD_CONFIG,
         ATTACK_STATUS,
-        ATTACK_DIRECTION
+        ATTACK_DIRECTION,
+        BATTLE_TARGET,
+        GET_DAMAGE,
+        RANDOM_WEAPON
     }
 
     void receiveMessage(String message);

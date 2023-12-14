@@ -1,11 +1,13 @@
 package com.mygdx.game.weapons;
 
+import com.mygdx.game.audio.AudioObserver;
+
 public class WeaponConfig {
     private String texturePath;
+    private AudioObserver.AudioTypeEvent sound;
 
-    private float damage;
+    private int damage;
     private float maxInterval;
-    private int maxMagazineSize;
 
     public WeaponConfig() {
 
@@ -13,25 +15,25 @@ public class WeaponConfig {
 
     public WeaponConfig(WeaponConfig config) {
         texturePath = config.texturePath;
+        sound = config.getSound();
 
         damage = config.getDamage();
         maxInterval = config.getMaxInterval();
-        maxMagazineSize = config.getMaxMagazineSize();
     }
 
     public String getTexturePath() {
         return texturePath;
     }
 
-    public float getDamage() {
+    public AudioObserver.AudioTypeEvent getSound() {
+            return sound;
+    }
+
+    public int getDamage() {
         return damage;
     }
 
     public float getMaxInterval() {
         return maxInterval;
-    }
-
-    public int getMaxMagazineSize() {
-        return maxMagazineSize;
     }
 }

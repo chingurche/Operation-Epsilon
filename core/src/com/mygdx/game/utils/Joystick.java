@@ -30,6 +30,10 @@ public class Joystick {
         return direction;
     }
 
+    public Circle getCircle() {
+        return circle;
+    }
+
     public void start(int x, int y) {
         if (circle.contains(x, y)) {
             active = true;

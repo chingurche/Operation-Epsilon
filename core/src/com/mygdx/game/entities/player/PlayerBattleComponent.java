@@ -7,17 +7,31 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.components.BattleComponent;
 import com.mygdx.game.entities.Entity;
+import com.mygdx.game.entities.EntityConfig;
+import com.mygdx.game.weapons.RangedWeapon;
 import com.mygdx.game.weapons.Weapon;
 import com.mygdx.game.weapons.WeaponFactory;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class PlayerBattleComponent extends BattleComponent {
     private boolean isAttacking = false;
     private Weapon weapon;
+    private World world;
 
     public PlayerBattleComponent(World world) {
         super();
 
-        weapon = WeaponFactory.getInstance().getWeapon(WeaponFactory.WeaponType.AK47, world);
+        this.world = world;
+        weapon = new RangedWeapon(world);
+    }
+
+    private void setRandomWeapon() {
+        List<WeaponFactory.WeaponType> values = Collections.unmodifiableList(Arrays.asList(WeaponFactory.WeaponType.values()));
+        WeaponFactory.WeaponType random = values.get((int) (Math.random() * values.size()));
+        weapon = WeaponFactory.getInstance().getWeapon(random, world);
     }
 
     @Override
@@ -26,6 +40,12 @@ public class PlayerBattleComponent extends BattleComponent {
 
         if (string.length == 0) {
             return;
+        }
+
+        if (string.length == 1) {
+            if (string[0].equalsIgnoreCase(MESSAGE.RANDOM_WEAPON.toString())) {
+                setRandomWeapon();
+            }
         }
 
         if (string.length == 2) {
@@ -37,6 +57,10 @@ public class PlayerBattleComponent extends BattleComponent {
             }
             else if (string[0].equalsIgnoreCase(MESSAGE.ATTACK_DIRECTION.toString())) {
                 weapon.setDirection(json.fromJson(Vector2.class, string[1]));
+            } else if (string[0].equalsIgnoreCase(MESSAGE.LOAD_CONFIG.toString())) {
+                EntityConfig config = json.fromJson(EntityConfig.class, string[1]);
+
+                health = config.getMaxHealthPoints();
             }
         }
     }

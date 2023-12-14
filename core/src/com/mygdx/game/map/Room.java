@@ -7,29 +7,44 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.mygdx.game.audio.AudioManager;
+import com.mygdx.game.audio.AudioObserver;
+import com.mygdx.game.components.Component;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.manager.ResourceManager;
+import com.mygdx.game.weapons.RangedWeapon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class Room {
+    private Json json = new Json();
     private TiledMap map;
     private final Vector2 position;
     private Array<RoomExit> exites = new Array<>();
-
+    public boolean parsingEnemies = false;
+    private boolean cleared = false;
 
     private Texture floor;
     private Texture walls;
 
     private Array<Body> staticBodies = new Array<>();
-    private Array<Entity> entities = new Array<>();
+    private ArrayList<Entity> entities = new ArrayList<>();
 
-    public Room(Vector2 position, World world) {
-        String randomName = "location/room" + (int) (Math.random() * 5 + 1) + ".tmx";
-        ResourceManager.loadMapAsset(randomName);
-        map = ResourceManager.getMapAsset(randomName);
+    public Room(Vector2 position, World world, boolean isStart) {
+        if (!isStart) {
+            String randomName = "location/room" + (int) (Math.random() * 22 + 1) + ".tmx";
+            ResourceManager.loadMapAsset(randomName);
+            map = ResourceManager.getMapAsset(randomName);
+
+            parseStaticObjects(world);
+        }
+        else {
+            map = new TiledMap();
+        }
 
         String randomWallsName = "textures/walls/walls" + (int) (Math.random() * 8 + 1) + ".png";
         ResourceManager.loadTextureAsset(randomWallsName);
@@ -37,8 +52,6 @@ public class Room {
         String randomFloorName = "textures/floor/sand" + (int) (Math.random() * 10 + 1) + ".png";
         ResourceManager.loadTextureAsset(randomFloorName);
         floor = ResourceManager.getTextureAsset(randomFloorName);
-
-        parseStaticObjects(world);
 
         this.position = position;
     }
@@ -58,8 +71,10 @@ public class Room {
         for (RoomExit exit : exites) {
             exit.render(batch);
         }
+    }
 
-        updateEntities(batch, delta);
+    public boolean isCleared() {
+        return cleared;
     }
 
     public Vector2 getPosition() {
@@ -101,17 +116,32 @@ public class Room {
         return emptyDirections.get((int) (Math.random() * emptyDirections.size()));
     }
 
-    public void parseStaticObjects(World world) {
+    private void parseStaticObjects(World world) {
         staticBodies = ResourceManager.parseStaticObjects(map, world);
     }
 
     public void parseEntities(World world) {
-
+        entities = ResourceManager.parseEntities(map, world);
     }
 
-    private void updateEntities(Batch batch, float delta) {
-        for (int i = 0; i < entities.size; i++) {
+    public void updateEntities(Entity entity, Batch batch, float delta) {
+        Vector2 target = entity.getBody().getPosition();
+
+        for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext(); ) {
+            Entity enemy = iterator.next();
+            if (enemy.isDead()) {
+                enemy.destroy();
+                iterator.remove();
+            }
+        }
+
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).sendMessage(Component.MESSAGE.BATTLE_TARGET, json.toJson(target));
             entities.get(i).update(batch, delta);
+        }
+
+        if (entities.size() == 0) {
+            cleared = true;
         }
     }
 }

@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.mygdx.game.audio.AudioManager;
+import com.mygdx.game.audio.AudioObserver;
 import com.mygdx.game.components.BattleComponent;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.GraphicsComponent;
@@ -55,6 +57,10 @@ public class Entity {
         world = body.getWorld();
     }
 
+    public Body getBody() {
+        return physicsComponent.getBody();
+    }
+
     public World getWorld() {
         return world;
     }
@@ -65,6 +71,10 @@ public class Entity {
 
     public EntityConfig getEntityConfig() {
         return entityConfig;
+    }
+
+    public boolean isDead() {
+        return battleComponent.getHealth() <= 0;
     }
 
     public void update(Batch batch, float delta) {
@@ -83,6 +93,12 @@ public class Entity {
         for (Component component : components) {
             component.receiveMessage(message);
         }
+    }
+
+    public void destroy() {
+        physicsComponent.getBody().getWorld().destroyBody(physicsComponent.getBody());
+        AudioManager.getInstance().onNotify(AudioObserver.AudioCommand.MUSIC_STOP, AudioObserver.AudioTypeEvent.KILLED_ENEMY);
+        AudioManager.getInstance().onNotify(AudioObserver.AudioCommand.MUSIC_PLAY_ONCE, AudioObserver.AudioTypeEvent.KILLED_ENEMY);
     }
 
     public static EntityConfig getEntityConfig(String path) {

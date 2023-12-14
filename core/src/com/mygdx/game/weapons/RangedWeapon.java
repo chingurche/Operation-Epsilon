@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.mygdx.game.audio.AudioManager;
 import com.mygdx.game.audio.AudioObserver;
+import com.mygdx.game.manager.ResourceManager;
 import com.mygdx.game.map.RoomExit;
 import com.mygdx.game.physics.PhysicsBodyData;
 
@@ -24,12 +25,12 @@ import java.util.Iterator;
 public class RangedWeapon extends Weapon {
     private World world;
     private ArrayList<Bullet> bullets = new ArrayList<>();
-
-    private int maxMagazineSize;
-    private int magazineSize = 0;
+    private Texture bulletTexture;
 
     public RangedWeapon(World world) {
         this.world = world;
+        ResourceManager.loadTextureAsset("textures/weapons/bullet1.png");
+        bulletTexture = ResourceManager.getTextureAsset("textures/weapons/bullet1.png");
     }
 
     @Override
@@ -42,7 +43,7 @@ public class RangedWeapon extends Weapon {
         int directionX = direction.x > 0 ? -1 : 1;
         batch.begin();
         batch.draw(texture,position.x * PPM - (8 * directionX),
-                position.y * PPM - 10, 16 * directionX, 16);
+                position.y * PPM - 12, 16 * directionX, 16);
         batch.end();
     }
 
@@ -68,18 +69,16 @@ public class RangedWeapon extends Weapon {
     }
 
     protected void attack() {
-        Bullet bullet = new Bullet(position, direction, world);
+        Bullet bullet = new Bullet(position, direction, world, damage, bulletTexture);
         bullets.add(bullet);
 
-        AudioManager.getInstance().onNotify(AudioObserver.AudioCommand.MUSIC_STOP, AudioObserver.AudioTypeEvent.SHOOT);
-        AudioManager.getInstance().onNotify(AudioObserver.AudioCommand.MUSIC_PLAY_ONCE, AudioObserver.AudioTypeEvent.SHOOT);
+        AudioManager.getInstance().onNotify(AudioObserver.AudioCommand.MUSIC_STOP, weaponConfig.getSound());
+        AudioManager.getInstance().onNotify(AudioObserver.AudioCommand.MUSIC_PLAY_ONCE, weaponConfig.getSound());
     }
 
     @Override
     public void loadConfig() {
         super.loadConfig();
-
-        maxMagazineSize = weaponConfig.getMaxMagazineSize();
     }
 
     public class Bullet {
@@ -87,14 +86,18 @@ public class RangedWeapon extends Weapon {
         private Body body;
         private Vector2 direction;
         private TextureRegion texture;
+        private int damage;
 
-        public Bullet(Vector2 position, Vector2 direction, World world) {
+        public Bullet(Vector2 position, Vector2 direction, World world, int damage, Texture texture) {
             this.direction = direction;
-            texture = new TextureRegion(new Texture("textures/weapons/bullet1.png"));
+            this.damage = damage;
+            this.texture = new TextureRegion(texture);
             body = createBody(world);
             body.setTransform(position.add(direction), 0);
             body.setUserData(new PhysicsBodyData(PhysicsBodyData.DataType.BULLET, this));
         }
+
+        public int getDamage() { return damage; }
 
         public Body getBody() {
             return body;
@@ -119,7 +122,7 @@ public class RangedWeapon extends Weapon {
             Body body = world.createBody(bodyDef);
             Shape shape = new CircleShape();
             shape.setRadius(0.2f);
-            body.createFixture(shape, 1000);
+            body.createFixture(shape, 10000);
             return body;
         }
 

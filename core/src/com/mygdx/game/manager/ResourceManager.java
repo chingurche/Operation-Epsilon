@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -23,8 +24,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.mygdx.game.components.Component;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.EntityFactory;
+
+import java.util.ArrayList;
 
 
 public class ResourceManager {
@@ -64,16 +69,29 @@ public class ResourceManager {
         return worldBodies;
     }
 
-    public static Array<Entity> parseEntities(TiledMap tiledMap, World world) {
-        MapObjects mapObjects = tiledMap.getLayers().get("objects").getObjects();
-        Array<Entity> entities = new Array<>();
+    public static ArrayList<Entity> parseEntities(TiledMap tiledMap, World world) {
+        Json json = new Json();
+
+        MapLayer mapLayer = tiledMap.getLayers().get("objects");
+        if (mapLayer == null) {
+            return new ArrayList<>();
+        }
+
+        MapObjects mapObjects = mapLayer.getObjects();
+        ArrayList<Entity> entities = new ArrayList<>();
 
         for (MapObject mapObject : mapObjects) {
             String mapObjectName = mapObject.getName();
 
+            if (mapObjectName == null) { continue; }
+
             switch (mapObjectName) {
                 case "baseenemy":
                     Entity entity = EntityFactory.getInstance().getEntity(EntityFactory.EntityType.BASE_ENEMY, world);
+                    Vector2 position = new Vector2(
+                            mapObject.getProperties().get("x", float.class) / PPM + 1,
+                            mapObject.getProperties().get("y", float.class) / PPM + 1);
+                    entity.sendMessage(Component.MESSAGE.INIT_POSITION, json.toJson(position));
                     entities.add(entity);
                     break;
             }

@@ -17,6 +17,8 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.mygdx.game.audio.AudioManager;
+import com.mygdx.game.audio.AudioObserver;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.EntityConfig;
@@ -55,13 +57,17 @@ public class GameStage {
 
         createWorld();
 
-        createRooms(10);
-
         loadSandStorm("scripts/sandstorm.json");
     }
 
     private void update() {
         world.step(1 / 60f, 6, 2);
+
+        if (currentRoom.parsingEnemies) {
+            currentRoom.parseEntities(world);
+            currentRoom.parsingEnemies = false;
+        }
+
         mapRenderer.setView(camera);
     }
 
@@ -72,7 +78,9 @@ public class GameStage {
 
         mapRenderer.render();
 
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        currentRoom.updateEntities(player, batch, delta);
+
+        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     public void renderEffects(Batch batch, float delta) {
@@ -80,6 +88,10 @@ public class GameStage {
         Texture sandStormTexture = sandStormAnimation.getKeyFrame(gameTime);
         batch.draw(sandStormTexture, 0, 0, screenSize.x, screenSize.y);
         batch.end();
+    }
+
+    public void setPlayer(Entity player) {
+        this.player = player;
     }
 
     public World getWorld() {
@@ -90,8 +102,8 @@ public class GameStage {
         return currentRoom;
     }
 
-    private void createRooms(int roomsNumber) {
-        rooms.add(new Room(Vector2.Zero, world));
+    public void createRooms(int roomsNumber) {
+        rooms.add(new Room(Vector2.Zero, world, true));
         setCurrentRoom(rooms.get(0));
 
         for (int i = 1; i < roomsNumber; i++) {
@@ -103,7 +115,7 @@ public class GameStage {
             RoomExit.Direction emptyDirection = randomRoom.getRandomEmptyDirection();
             Vector2 deltaPosition = RoomExit.toCursedVector2(emptyDirection);
             Vector2 newPosition = new Vector2(randomRoom.getPosition()).add(deltaPosition);
-            Room newRoom = new Room(newPosition, world);
+            Room newRoom = new Room(newPosition, world, false);
             setExitesWithRounded(newRoom);
 
             rooms.add(newRoom);
@@ -147,7 +159,14 @@ public class GameStage {
     }
 
     public void changeRoom(RoomExit.Direction direction) {
-        if (getRoomByPosition(RoomExit.toCursedVector2(direction).add(getCurrentRoom().getPosition())) == null) {
+        Room otherRoom = getRoomByPosition(RoomExit.toCursedVector2(direction).add(getCurrentRoom().getPosition()));
+        if (otherRoom == null) {
+            return;
+        }
+
+        if (!currentRoom.isCleared()) {
+            AudioManager.getInstance().onNotify(AudioObserver.AudioCommand.MUSIC_STOP, AudioObserver.AudioTypeEvent.NO_ACCESS);
+            AudioManager.getInstance().onNotify(AudioObserver.AudioCommand.MUSIC_PLAY_ONCE, AudioObserver.AudioTypeEvent.NO_ACCESS);
             return;
         }
 
@@ -171,13 +190,13 @@ public class GameStage {
     }
 
     private void setCurrentRoom(Room room) {
+        player.sendMessage(Component.MESSAGE.RANDOM_WEAPON);
         currentRoom = room;
         currentRoom.setActive(true);
+        if (!currentRoom.isCleared()) {
+            currentRoom.parsingEnemies = true;
+        }
         mapRenderer = new OrthogonalTiledMapRenderer(currentRoom.getMap());
-    }
-
-    public void setPlayer(Entity player) {
-        this.player = player;
     }
 
     public void setCamera(OrthographicCamera camera) {

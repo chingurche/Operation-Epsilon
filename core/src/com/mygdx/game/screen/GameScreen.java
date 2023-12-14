@@ -62,6 +62,7 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
 
         gameStage.setPlayer(player);
 
+        gameStage.createRooms(32);
 
         moveJoystick = new Joystick(300, screenSize.y - 300, 200);
         attackJoystick = new Joystick(screenSize.x - 300, screenSize.y - 300, 200);
@@ -78,7 +79,10 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
     public void show() {
         notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.MENU_THEME);
         notify(AudioObserver.AudioCommand.MUSIC_PLAY_LOOP, AudioObserver.AudioTypeEvent.MENU_THEME);
-        notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.SHOOT);
+        notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.SHOOT1);
+        notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.SHOOT2);
+        notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.KILLED_ENEMY);
+        notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.NO_ACCESS);
     }
 
     private void update(float delta) {
@@ -116,7 +120,9 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         }
         else {
             attackJoystick.start(screenX, screenY);
-            player.sendMessage(Component.MESSAGE.ATTACK_STATUS, json.toJson(true));
+            if (attackJoystick.getCircle().contains(screenX, screenY)) {
+                player.sendMessage(Component.MESSAGE.ATTACK_STATUS, json.toJson(true));
+            }
             player.sendMessage(Component.MESSAGE.ATTACK_DIRECTION, json.toJson(attackJoystick.getDirection()));
             return true;
         }

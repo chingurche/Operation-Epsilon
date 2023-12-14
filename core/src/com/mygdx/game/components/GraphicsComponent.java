@@ -96,7 +96,7 @@ public abstract class GraphicsComponent extends ComponentSubject implements Comp
         }
     }
 
-    protected void updateFrame(float delta) {
+    protected void updateFrame() {
         currentFrame = currentAnimation.getKeyFrame(gameTime);
     }
 

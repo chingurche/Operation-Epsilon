@@ -4,7 +4,13 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class WeaponFactory {
     public enum WeaponType {
-        AK47("scripts/weapons/ak47.json");
+        AK47("scripts/weapons/ak47.json"),
+        PUMP("scripts/weapons/pump.json"),
+        SNIPER("scripts/weapons/sniper.json"),
+        REVOLVER("scripts/weapons/revolver.json"),
+        M4("scripts/weapons/m4.json"),
+        UZI("scripts/weapons/uzi.json"),
+        VINT("scripts/weapons/vint.json");
 
         private String configPath;
 
@@ -31,17 +37,9 @@ public class WeaponFactory {
     }
 
     public Weapon getWeapon(WeaponType type, World world) {
-        Weapon weapon;
-
-        switch (type) {
-            case AK47:
-                weapon = new RangedWeapon(world);
-                weapon.setWeaponConfig(Weapon.getWeaponConfig(type.getValue()));
-                weapon.loadConfig();
-
-                return weapon;
-            default:
-                return null;
-        }
+        Weapon weapon = new RangedWeapon(world);
+        weapon.setWeaponConfig(Weapon.getWeaponConfig(type.getValue()));
+        weapon.loadConfig();
+        return weapon;
     }
 }

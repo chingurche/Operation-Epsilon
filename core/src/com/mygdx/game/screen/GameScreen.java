@@ -8,6 +8,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -35,6 +37,7 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
     private OrthographicCamera camera;
     private OrthographicCamera hudCamera;
     private Json json;
+    private BitmapFont font;
 
     private GameStage gameStage;
     private Joystick moveJoystick;
@@ -45,7 +48,7 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         super(gdxGame, batch, hudBatch);
 
         json = new Json();
-
+        font = new BitmapFont(true);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, screenSize.x / cameraViewport, screenSize.y / cameraViewport);
@@ -77,12 +80,19 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
 
     @Override
     public void show() {
-        notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.MENU_THEME);
-        notify(AudioObserver.AudioCommand.MUSIC_PLAY_LOOP, AudioObserver.AudioTypeEvent.MENU_THEME);
+        notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.MAIN_THEME);
+        notify(AudioObserver.AudioCommand.MUSIC_PLAY_LOOP, AudioObserver.AudioTypeEvent.MAIN_THEME);
         notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.SHOOT1);
         notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.SHOOT2);
         notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.KILLED_ENEMY);
         notify(AudioObserver.AudioCommand.MUSIC_LOAD, AudioObserver.AudioTypeEvent.NO_ACCESS);
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+
+        notify(AudioObserver.AudioCommand.MUSIC_STOP_ALL, AudioObserver.AudioTypeEvent.NO_ACCESS);
     }
 
     private void update(float delta) {
@@ -92,6 +102,10 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
         batch.setProjectionMatrix(camera.combined);
         hudBatch.setProjectionMatrix(hudCamera.combined);
         gameTime += delta;
+
+        if (player.isDead()) {
+            game.setMainMenu();
+        }
     }
 
     @Override
@@ -103,12 +117,17 @@ public class GameScreen extends BaseScreen implements ComponentObserver {
 
         gameStage.render(batch, delta);
 
-        player.update(batch, delta);
+        player.update(batch, hudBatch, delta);
 
         gameStage.renderEffects(hudBatch, delta);
 
         moveJoystick.render(hudBatch);
         attackJoystick.render(hudBatch);
+
+        hudBatch.setProjectionMatrix(new Matrix4(hudCamera.combined).scale(5, 5, 5));
+        hudBatch.begin();
+        font.draw(hudBatch, "Health: " + player.getHealth(), 10, 10);
+        hudBatch.end();
     }
 
     @Override

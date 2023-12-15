@@ -77,10 +77,12 @@ public class Entity {
         return battleComponent.getHealth() <= 0;
     }
 
-    public void update(Batch batch, float delta) {
+    public int getHealth() { return battleComponent.getHealth(); }
+
+    public void update(Batch batch, Batch hudBatch, float delta) {
         graphicsComponent.update(this, batch, delta);
         physicsComponent.update(this, delta);
-        battleComponent.update(this, batch, delta);
+        battleComponent.update(this, batch, hudBatch, delta);
     }
 
     public void sendMessage(Component.MESSAGE type, String ... args) {

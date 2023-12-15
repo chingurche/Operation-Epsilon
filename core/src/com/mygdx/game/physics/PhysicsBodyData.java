@@ -33,6 +33,9 @@ public class PhysicsBodyData {
                 if (other.getDataType() == DataType.ROOM_TRIGGER) {
                     ExitInfo exitInfo = (ExitInfo) other.getData();
                     exitInfo.getGameStage().changeRoom(exitInfo.getDirection());
+                } else if (other.getDataType() == DataType.ENEMY_ENTITY) {
+                    Entity player = (Entity) data;
+                    player.sendMessage(Component.MESSAGE.GET_DAMAGE, "skibididodopdopeses");
                 }
                 break;
             case BULLET:

@@ -108,7 +108,7 @@ public class ResourceManager {
 
         CircleShape shape = new CircleShape();
         shape.setPosition(Vector2.Zero);
-        shape.setRadius(1);
+        shape.setRadius(0.9f);
         body.createFixture(shape, 1000);
 
         return body;

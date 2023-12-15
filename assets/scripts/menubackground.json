@@ -1,0 +1,28 @@
+{
+  "animationType": "OTHER",
+  "stateTime":0.1,
+  "texturePaths": [
+    "textures/menu/background/1.png",
+    "textures/menu/background/2.png",
+    "textures/menu/background/3.png",
+    "textures/menu/background/4.png",
+    "textures/menu/background/5.png",
+    "textures/menu/background/6.png",
+    "textures/menu/background/7.png",
+    "textures/menu/background/8.png",
+    "textures/menu/background/9.png",
+    "textures/menu/background/10.png",
+    "textures/menu/background/12.png",
+    "textures/menu/background/13.png",
+    "textures/menu/background/14.png",
+    "textures/menu/background/15.png",
+    "textures/menu/background/16.png",
+    "textures/menu/background/17.png",
+    "textures/menu/background/18.png",
+    "textures/menu/background/19.png",
+    "textures/menu/background/20.png",
+    "textures/menu/background/21.png",
+    "textures/menu/background/20.png",
+    "textures/menu/background/19.png"
+  ]
+}

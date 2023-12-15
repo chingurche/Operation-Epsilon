@@ -137,7 +137,7 @@ public class Room {
 
         for (int i = 0; i < entities.size(); i++) {
             entities.get(i).sendMessage(Component.MESSAGE.BATTLE_TARGET, json.toJson(target));
-            entities.get(i).update(batch, delta);
+            entities.get(i).update(batch, null, delta);
         }
 
         if (entities.size() == 0) {

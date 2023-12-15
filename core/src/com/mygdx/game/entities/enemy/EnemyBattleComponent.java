@@ -34,7 +34,7 @@ public class EnemyBattleComponent extends BattleComponent {
     }
 
     @Override
-    public void update(Entity entity, Batch batch, float delta) {
+    public void update(Entity entity, Batch batch, Batch hudBatch, float delta) {
         Vector2 direction = new Vector2(target).sub(currentPosition).nor();
         entity.sendMessage(MESSAGE.ENTITY_DIRECTION, json.toJson(direction));
     }

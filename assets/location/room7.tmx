@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="11">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
  <tileset firstgid="1" source="spritesheet.tsx"/>
  <layer id="1" name="Слой тайлов 1" width="16" height="8">
   <data encoding="base64">
@@ -36,6 +36,12 @@
   </object>
   <object id="10" x="48" y="96">
    <polygon points="0,0 0,16 32,16 32,0"/>
+  </object>
+  <object id="13" name="baseenemy" x="128" y="48" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="14" name="baseenemy" x="144" y="80" width="16" height="16">
+   <ellipse/>
   </object>
  </objectgroup>
 </map>

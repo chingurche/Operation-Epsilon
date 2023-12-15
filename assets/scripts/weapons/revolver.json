@@ -1,6 +1,7 @@
 {
   "texturePath": "textures/weapons/gun2.png",
   "sound": "SHOOT1",
+  "rarity": "COMMON",
   "damage": 30,
   "maxInterval": 0.4
 }

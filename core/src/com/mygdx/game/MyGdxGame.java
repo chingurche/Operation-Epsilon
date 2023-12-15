@@ -28,10 +28,14 @@ public class MyGdxGame extends Game {
 		hudBatch = new SpriteBatch();
 		resourceManager = new ResourceManager();
 
-		//menuScreen = new MenuScreen(this, resourceManager);
-		gameScreen = new GameScreen(this, batch, hudBatch);
+		menuScreen = new MenuScreen(this, batch, hudBatch);
+		//gameScreen = new GameScreen(this, batch, hudBatch);
 
-		this.setScreen(gameScreen);
+		setMainMenu();
+	}
+
+	public void setMainMenu() {
+		this.setScreen(menuScreen);
 	}
 
 	@Override

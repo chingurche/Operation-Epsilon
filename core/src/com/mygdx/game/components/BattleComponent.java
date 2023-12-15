@@ -23,5 +23,5 @@ public abstract class BattleComponent implements Component {
         return health;
     }
 
-    public abstract void update(Entity entity, Batch batch, float delta);
+    public abstract void update(Entity entity, Batch batch, Batch hudBatch, float delta);
 }
